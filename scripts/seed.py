@@ -7,7 +7,7 @@ import yaml
 from qdrant_client import AsyncQdrantClient
 
 from app.core.config import get_settings
-from app.db.session import AsyncSessionMaker
+from app.db.session import get_sessionmaker
 from app.embeddings.providers import HashEmbeddingProvider, build_embedding_provider
 from app.ingestion.pipeline import (
     ingest_documents_postgres,
@@ -53,7 +53,7 @@ async def _run(
     )
 
     if not qdrant_only:
-        async with AsyncSessionMaker() as session:
+        async with get_sessionmaker()() as session:
             chunk_count = await ingest_documents_postgres(
                 session, documents, provider, chunk_size, overlap
             )
