@@ -1,0 +1,334 @@
+{
+  "by_query_type": {
+    "api_function_name": {
+      "count": 1.0,
+      "mean_latency_ms": 18.13693158328533,
+      "mean_recall": 0.0
+    },
+    "conceptual_question": {
+      "count": 1.0,
+      "mean_latency_ms": 4.824573174118996,
+      "mean_recall": 0.0
+    },
+    "error_code": {
+      "count": 1.0,
+      "mean_latency_ms": 5.008370615541935,
+      "mean_recall": 0.0
+    },
+    "exact_identifier": {
+      "count": 1.0,
+      "mean_latency_ms": 9.903698228299618,
+      "mean_recall": 1.0
+    },
+    "hard_negative": {
+      "count": 1.0,
+      "mean_latency_ms": 4.637479782104492,
+      "mean_recall": 0.0
+    },
+    "metadata_filtered": {
+      "count": 1.0,
+      "mean_latency_ms": 40.045284666121006,
+      "mean_recall": 1.0
+    },
+    "mixed_lexical_semantic": {
+      "count": 1.0,
+      "mean_latency_ms": 4.673117771744728,
+      "mean_recall": 1.0
+    },
+    "multilingual": {
+      "count": 1.0,
+      "mean_latency_ms": 4.669180139899254,
+      "mean_recall": 0.0
+    },
+    "semantic_paraphrase": {
+      "count": 1.0,
+      "mean_latency_ms": 4.679279401898384,
+      "mean_recall": 0.0
+    },
+    "version_specific": {
+      "count": 1.0,
+      "mean_latency_ms": 4.565604031085968,
+      "mean_recall": 0.0
+    }
+  },
+  "config_name": "small",
+  "configuration": {
+    "dataset": {
+      "chunk_overlap_tokens": 40,
+      "chunk_size_tokens": 220,
+      "seed": 42,
+      "target_chunks": 10000
+    },
+    "embedding": {
+      "batch_size": 32,
+      "device": "cpu",
+      "dimension": 384,
+      "model": "sentence-transformers/all-MiniLM-L6-v2",
+      "provider": "local"
+    },
+    "load": {
+      "concurrency": [
+        1,
+        5,
+        10
+      ],
+      "measurement_seconds": 30,
+      "warmup_seconds": 10
+    },
+    "name": "small",
+    "retrieval": {
+      "strategies": [
+        "lexical",
+        "dense_pgvector",
+        "dense_qdrant",
+        "hybrid_pgvector_rrf",
+        "hybrid_qdrant_rrf"
+      ],
+      "top_k": 10
+    }
+  },
+  "dataset_size": 10000,
+  "git_commit_hash": "d356c7b832bd68db0fc2d62c1ca0a7a758ba77b3",
+  "hardware_information": {
+    "platform": "Linux-6.8.0-111-generic-x86_64-with-glibc2.35",
+    "processor": "x86_64",
+    "python": "3.12.13"
+  },
+  "reranker_enabled": false,
+  "results": [
+    {
+      "hit_rate_at_10": 1.0,
+      "language": "en",
+      "latency_ms": 9.903698228299618,
+      "mrr": 1.0,
+      "ndcg_at_10": 2.5212161362318564,
+      "precision_at_10": 0.1,
+      "query_id": "q-000-exact_identifier",
+      "query_type": "exact_identifier",
+      "recall_at_10": 1.0,
+      "retrieved_ids": [
+        "00103840-3fdf-5888-95d6-b183d0bcf694",
+        "86533695-36b8-560f-9935-2ad5cf8c1e23",
+        "00103840-3fdf-5888-95d6-b183d0bcf694",
+        "7712a64c-8cb0-5f38-bc63-5a871ab6f80c",
+        "00103840-3fdf-5888-95d6-b183d0bcf694",
+        "d73e3907-4c8f-56f1-a5fc-c55feb497e45",
+        "00103840-3fdf-5888-95d6-b183d0bcf694",
+        "3bd855ba-cd17-5827-8220-b64740c26dc1",
+        "00103840-3fdf-5888-95d6-b183d0bcf694",
+        "f7b737cf-b62f-5310-a017-6ce840d55eb8"
+      ]
+    },
+    {
+      "hit_rate_at_10": 0.0,
+      "language": "en",
+      "latency_ms": 5.008370615541935,
+      "mrr": 0.0,
+      "ndcg_at_10": 0.0,
+      "precision_at_10": 0.0,
+      "query_id": "q-001-error_code",
+      "query_type": "error_code",
+      "recall_at_10": 0.0,
+      "retrieved_ids": [
+        "0d4a6872-b4a2-5f28-98e3-19ccbfab76c0",
+        "0acf2e48-e8f8-577a-9f3f-3950b31e37bc",
+        "12146546-d0fc-53f8-8b9f-61477d98b76c",
+        "0d4a6872-b4a2-5f28-98e3-19ccbfab76c0",
+        "0d4a6872-b4a2-5f28-98e3-19ccbfab76c0",
+        "c70d7789-8fc6-5227-913f-8853e26aac1c",
+        "c039b8be-fe90-5d69-bd90-9316d706ca74",
+        "0acf2e48-e8f8-577a-9f3f-3950b31e37bc",
+        "0acf2e48-e8f8-577a-9f3f-3950b31e37bc",
+        "ac948cc0-6d26-5412-8a1d-0a83610065b1"
+      ]
+    },
+    {
+      "hit_rate_at_10": 0.0,
+      "language": "en",
+      "latency_ms": 18.13693158328533,
+      "mrr": 0.0,
+      "ndcg_at_10": 0.0,
+      "precision_at_10": 0.0,
+      "query_id": "q-002-api_function_name",
+      "query_type": "api_function_name",
+      "recall_at_10": 0.0,
+      "retrieved_ids": [
+        "b2104212-c082-5718-878c-53f09a31d36f",
+        "4b98bae6-8fed-5b15-8a9b-54a8cc06decc",
+        "1a6051aa-5573-5d8a-8bbb-eb8f2d7395f7",
+        "82f419d6-49c0-59ad-a737-4fab28177e6b",
+        "6deaee75-bd38-57f5-8a7f-da2df4b1b0e8",
+        "82f419d6-49c0-59ad-a737-4fab28177e6b",
+        "c37d48f2-06a3-59b1-a21d-9ba5974a8289",
+        "4b98bae6-8fed-5b15-8a9b-54a8cc06decc",
+        "79f36f1b-4ad5-592e-aa1b-542cbd6fb0a2",
+        "4b98bae6-8fed-5b15-8a9b-54a8cc06decc"
+      ]
+    },
+    {
+      "hit_rate_at_10": 0.0,
+      "language": "en",
+      "latency_ms": 4.679279401898384,
+      "mrr": 0.0,
+      "ndcg_at_10": 0.0,
+      "precision_at_10": 0.0,
+      "query_id": "q-003-semantic_paraphrase",
+      "query_type": "semantic_paraphrase",
+      "recall_at_10": 0.0,
+      "retrieved_ids": [
+        "e76aed70-bb38-5c4b-ae0d-04b702408aac",
+        "6d40d5d1-3759-5bab-a39b-ed18dabd5f7b",
+        "d0298c4b-d26b-53f7-9e8e-31034bae99f6",
+        "6d40d5d1-3759-5bab-a39b-ed18dabd5f7b",
+        "e76aed70-bb38-5c4b-ae0d-04b702408aac",
+        "d0298c4b-d26b-53f7-9e8e-31034bae99f6",
+        "e76aed70-bb38-5c4b-ae0d-04b702408aac",
+        "6d40d5d1-3759-5bab-a39b-ed18dabd5f7b",
+        "d0298c4b-d26b-53f7-9e8e-31034bae99f6",
+        "d0298c4b-d26b-53f7-9e8e-31034bae99f6"
+      ]
+    },
+    {
+      "hit_rate_at_10": 0.0,
+      "language": "en",
+      "latency_ms": 4.824573174118996,
+      "mrr": 0.0,
+      "ndcg_at_10": 0.0,
+      "precision_at_10": 0.0,
+      "query_id": "q-004-conceptual_question",
+      "query_type": "conceptual_question",
+      "recall_at_10": 0.0,
+      "retrieved_ids": [
+        "d9ed9d05-3970-5467-a6d7-e94550e61084",
+        "ea115ab3-1d45-5c0b-808f-770b7b4988b8",
+        "d9ed9d05-3970-5467-a6d7-e94550e61084",
+        "ea115ab3-1d45-5c0b-808f-770b7b4988b8",
+        "65bae7ff-1189-566b-8572-cdd81d377428",
+        "ea115ab3-1d45-5c0b-808f-770b7b4988b8",
+        "d9ed9d05-3970-5467-a6d7-e94550e61084",
+        "ea115ab3-1d45-5c0b-808f-770b7b4988b8",
+        "d9ed9d05-3970-5467-a6d7-e94550e61084",
+        "65bae7ff-1189-566b-8572-cdd81d377428"
+      ]
+    },
+    {
+      "hit_rate_at_10": 1.0,
+      "language": "en",
+      "latency_ms": 4.673117771744728,
+      "mrr": 0.2,
+      "ndcg_at_10": 0.38685280723454163,
+      "precision_at_10": 0.1,
+      "query_id": "q-005-mixed_lexical_semantic",
+      "query_type": "mixed_lexical_semantic",
+      "recall_at_10": 1.0,
+      "retrieved_ids": [
+        "88238db3-fdd5-50ca-9bbb-f76d6378568e",
+        "88238db3-fdd5-50ca-9bbb-f76d6378568e",
+        "12146546-d0fc-53f8-8b9f-61477d98b76c",
+        "88238db3-fdd5-50ca-9bbb-f76d6378568e",
+        "003e0088-989d-5d33-b810-637bc6d1ae70",
+        "4ec6dbf5-5740-5165-90c3-4df3cf037c0e",
+        "f15957eb-7584-5e8f-bf2b-2dfe03ca1c30",
+        "f15957eb-7584-5e8f-bf2b-2dfe03ca1c30",
+        "c70d7789-8fc6-5227-913f-8853e26aac1c",
+        "c039b8be-fe90-5d69-bd90-9316d706ca74"
+      ]
+    },
+    {
+      "hit_rate_at_10": 0.0,
+      "language": "en",
+      "latency_ms": 4.565604031085968,
+      "mrr": 0.0,
+      "ndcg_at_10": 0.0,
+      "precision_at_10": 0.0,
+      "query_id": "q-006-version_specific",
+      "query_type": "version_specific",
+      "recall_at_10": 0.0,
+      "retrieved_ids": [
+        "e2ffd615-0ec6-54c3-bb5e-50e060cab54f",
+        "e2ffd615-0ec6-54c3-bb5e-50e060cab54f",
+        "e2ffd615-0ec6-54c3-bb5e-50e060cab54f",
+        "351db0fe-9064-5a26-84c1-43038f031b4d",
+        "3f13a5c2-a55a-5608-861c-fd4e18ac37ad",
+        "ae1c3130-6d78-514e-9930-0e2fd249dfa1",
+        "24699bfc-19d0-5605-9053-d5c4deb04a1e",
+        "3a7162a8-e33c-5f93-b245-7e53b1206735",
+        "fd168bd0-89cb-571a-984c-9091b5405724",
+        "7a5f9a11-00a3-5887-afe0-4bfdd982e6f4"
+      ]
+    },
+    {
+      "hit_rate_at_10": 1.0,
+      "language": "en",
+      "latency_ms": 40.045284666121006,
+      "mrr": 0.2,
+      "ndcg_at_10": 0.38685280723454163,
+      "precision_at_10": 0.1,
+      "query_id": "q-007-metadata_filtered",
+      "query_type": "metadata_filtered",
+      "recall_at_10": 1.0,
+      "retrieved_ids": [
+        "24d26264-08d7-5c3b-a66b-adeab6a84e5f",
+        "677f5bbc-7720-5e7d-8446-4f01f6a25b27",
+        "eb7e335a-eae6-5cf6-aea1-123e5160115a",
+        "ac52ce81-d6d9-58da-8669-0313dad3bcd2",
+        "00701212-490a-5ae6-8130-d725be52dca6",
+        "6f94f6f0-6fe3-5437-bdfd-4e641a0cbe6a",
+        "28e45ddd-615b-57b6-8f31-bfbaa4f2831b",
+        "eb0292d3-9247-505f-8392-627d41810278",
+        "4d6d6234-e7ed-5610-9894-7d1182200746",
+        "43e11a4a-5e04-54c2-b770-3f73beeaeee4"
+      ]
+    },
+    {
+      "hit_rate_at_10": 0.0,
+      "language": "zh",
+      "latency_ms": 4.669180139899254,
+      "mrr": 0.0,
+      "ndcg_at_10": 0.0,
+      "precision_at_10": 0.0,
+      "query_id": "q-008-multilingual",
+      "query_type": "multilingual",
+      "recall_at_10": 0.0,
+      "retrieved_ids": [
+        "e9b55266-8965-5c30-8f60-7ea8f9004c99",
+        "a8ec77f3-09ea-5c51-b920-dff8088bd3b7",
+        "812ecb03-a4fe-5715-95f1-b8db76d98c92",
+        "4e194aef-e942-5665-8259-f50d9a2534c7",
+        "812ecb03-a4fe-5715-95f1-b8db76d98c92",
+        "4e194aef-e942-5665-8259-f50d9a2534c7",
+        "4e194aef-e942-5665-8259-f50d9a2534c7",
+        "812ecb03-a4fe-5715-95f1-b8db76d98c92",
+        "be222881-646a-5e44-ac08-9563f71c7fde",
+        "60e8ea8e-b559-5ba7-8973-1b6b0d5a3f2d"
+      ]
+    },
+    {
+      "hit_rate_at_10": 0.0,
+      "language": "en",
+      "latency_ms": 4.637479782104492,
+      "mrr": 0.0,
+      "ndcg_at_10": 0.0,
+      "precision_at_10": 0.0,
+      "query_id": "q-009-hard_negative",
+      "query_type": "hard_negative",
+      "recall_at_10": 0.0,
+      "retrieved_ids": [
+        "4305d3d6-a2a9-5a77-8c7e-bdb0acbaeddd",
+        "fbb1f272-0f8d-5d69-ad87-33ab08a93a87",
+        "9dd42590-4abe-543a-a974-f823a39ad973",
+        "6f94f6f0-6fe3-5437-bdfd-4e641a0cbe6a",
+        "b1234110-66cb-5ffa-b8c7-215dad3c18a9",
+        "ceacf7a6-96b8-52d8-9ce0-35ebdccc847c",
+        "74cdc864-ecc4-5ff1-ac55-8ff9b19452c3",
+        "12af086b-a8ef-53b1-b8ac-33a0191f5c15",
+        "7f95515a-c4ae-5e9d-9940-2b07c803bfac",
+        "845f2a4b-442c-5018-a8ad-2f2502d6cf9a"
+      ]
+    }
+  ],
+  "run_id": "0aa30fb2-970b-40d7-9a3c-41d3681ff6cc",
+  "strategy": "hybrid_qdrant",
+  "top_k": 10,
+  "warm_cache": true
+}

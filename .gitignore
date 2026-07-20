@@ -24,6 +24,8 @@ model_weights/
 benchmark_cache/
 benchmarks/results/*
 !benchmarks/results/.gitkeep
+!benchmarks/results/0aa30fb2-970b-40d7-9a3c-41d3681ff6cc/
+!benchmarks/results/0aa30fb2-970b-40d7-9a3c-41d3681ff6cc/**
 infra/grafana/data/
 infra/postgres/data/
 infra/qdrant/storage/

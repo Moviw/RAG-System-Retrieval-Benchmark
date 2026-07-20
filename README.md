@@ -77,7 +77,7 @@ make benchmark-small
 
 The API runs on `http://localhost:8000`, Prometheus on `http://localhost:9090`, and Grafana on `http://localhost:3000` with the local demo credentials from `docker-compose.yml`.
 
-If Docker daemon access fails, fix local Docker socket permissions or run from a Docker-enabled session. On the current implementation host, `docker info` fails because the user cannot access `/var/run/docker.sock`.
+If Docker daemon access fails, fix local Docker socket permissions or run from a Docker-enabled session. This repository has been smoke-tested locally with Docker Compose, PostgreSQL, Qdrant, Prometheus, Grafana, postgres exporter, and node exporter running.
 
 ## API
 
@@ -158,6 +158,23 @@ Grafana dashboards are committed as JSON:
 - Load Test Overview
 - Benchmark Quality Metrics
 
+Dashboard JSON files live under `infra/grafana/dashboards/`. Screenshots from local runs should be saved under `docs/screenshots/` when publishing a report.
+
+## Initial Results
+
+A small local smoke benchmark is committed under `benchmarks/results/0aa30fb2-970b-40d7-9a3c-41d3681ff6cc/`.
+
+- Config: `benchmarks/configs/small.yaml`
+- Git commit recorded by the run: `d356c7b832bd68db0fc2d62c1ca0a7a758ba77b3`
+- Strategy: `hybrid_qdrant`
+- Dataset target: `10000` chunks
+- Top K: `10`
+- Warm cache: `true`
+- Mean latency: `10.11 ms`
+- Mean Recall@10: `0.300`
+
+This sample uses deterministic synthetic data and the hash embedding provider for fast local validation. It proves the pipeline, artifact generation, and observability path are wired correctly; it should not be interpreted as a model-quality claim.
+
 ## Failure Cases To Inspect
 
 - Exact identifiers may favor lexical retrieval over dense retrieval.
@@ -207,7 +224,7 @@ docker compose config
 - Synthetic data differs from production traffic and should be replaced or supplemented with real domain corpora before making product decisions.
 - Embedding model choice can dominate multilingual and semantic-query results.
 - Latency, quality, storage, update behavior, and infrastructure complexity must be compared together.
-- On this host, Docker daemon access is blocked, so Compose E2E validation has not run here yet.
+- The committed smoke result uses hash embeddings for speed; run the default Sentence Transformers configuration before drawing semantic-retrieval conclusions.
 
 ## Roadmap
 
