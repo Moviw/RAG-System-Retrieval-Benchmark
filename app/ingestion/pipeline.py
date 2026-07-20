@@ -141,7 +141,7 @@ def qdrant_filter(filters: dict[str, object] | None) -> Filter | None:
         must=[
             FieldCondition(key=str(key), match=MatchValue(value=value))
             for key, value in filters.items()
-            if not isinstance(value, (list, dict))
+            if not isinstance(value, list | dict)
         ]
     )
 

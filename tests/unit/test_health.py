@@ -1,18 +1,16 @@
-import pytest
+import asyncio
 
 from app.api.routes import health, ready
 
 
-@pytest.mark.anyio
-async def test_health_endpoint() -> None:
-    response = await health()
+def test_health_endpoint() -> None:
+    response = asyncio.run(health())
 
     assert response.status == "ok"
 
 
-@pytest.mark.anyio
-async def test_ready_endpoint() -> None:
-    response = await ready()
+def test_ready_endpoint() -> None:
+    response = asyncio.run(ready())
 
     assert response.status == "ready"
     assert response.database_configured is True

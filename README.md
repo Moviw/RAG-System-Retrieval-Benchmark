@@ -196,7 +196,7 @@ git diff --check
 ruff check .
 ruff format --check .
 mypy app
-pytest
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 pytest
 docker compose config
 ```
 

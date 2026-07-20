@@ -18,7 +18,7 @@ typecheck:
 	UV_CACHE_DIR=$(UV_CACHE_DIR) uv run mypy app scripts
 
 test:
-	UV_CACHE_DIR=$(UV_CACHE_DIR) uv run pytest
+	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 UV_CACHE_DIR=$(UV_CACHE_DIR) uv run pytest
 
 up:
 	docker compose up --build
