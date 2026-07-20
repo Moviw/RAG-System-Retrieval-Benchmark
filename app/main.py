@@ -8,6 +8,7 @@ from app.api.routes import router
 from app.core.config import get_settings
 from app.core.logging import configure_logging
 from app.embeddings.providers import build_embedding_provider
+from app.observability.metrics import prometheus_http_middleware
 
 
 @asynccontextmanager
@@ -26,6 +27,7 @@ def create_app() -> FastAPI:
         lifespan=lifespan,
         docs_url="/docs" if settings.app_env != "production" else None,
     )
+    app.middleware("http")(prometheus_http_middleware)
     app.include_router(router)
     app.mount("/metrics", make_asgi_app())
     return app

@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
 from app.db.session import get_session
+from app.observability.metrics import observe_retrieval
 from app.retrievers.factory import build_retriever
 from app.schemas.api import (
     BenchmarkRunListResponse,
@@ -66,6 +67,13 @@ async def search(
         await qdrant_client.close()
 
     latency = results[0].latency_ms if results else {}
+    observe_retrieval(
+        request_body.strategy.value,
+        request_body.dense_backend.value,
+        len(results),
+        latency,
+        1.0 if not request_body.filters else None,
+    )
     debug = {"results": [result.model_dump() for result in results]} if request_body.debug else None
     return SearchResponse(
         results=results,

@@ -1,0 +1,27 @@
+{
+  "annotations": {"list": []},
+  "editable": true,
+  "panels": [
+    {
+      "datasource": "Prometheus",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+      "id": 1,
+      "targets": [{"expr": "sum by (strategy) (rate(rag_retrieval_strategy_count_total[5m]))", "refId": "A"}],
+      "title": "Strategy QPS",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "Prometheus",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
+      "id": 2,
+      "targets": [{"expr": "histogram_quantile(0.95, sum by (le, strategy, stage) (rate(rag_retrieval_stage_latency_seconds_bucket[5m])))", "refId": "A"}],
+      "title": "Retrieval Stage P95",
+      "type": "timeseries"
+    }
+  ],
+  "schemaVersion": 39,
+  "tags": ["rag", "retrieval"],
+  "title": "Retrieval Comparison",
+  "uid": "rag-retrieval-comparison",
+  "version": 1
+}
