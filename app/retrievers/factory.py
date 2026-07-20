@@ -7,6 +7,7 @@ from app.retrievers.base import Retriever
 from app.retrievers.hybrid import HybridRetriever
 from app.retrievers.postgres import LexicalPostgresRetriever, PgVectorRetriever
 from app.retrievers.qdrant import QdrantRetriever
+from app.retrievers.router import AdaptiveRouterRetriever
 from app.schemas.search import DenseBackend, FusionMethod, RetrievalStrategy
 
 
@@ -35,4 +36,5 @@ def build_retriever(
         return HybridRetriever(lexical, qdrant, fusion_method.value)
 
     dense: Retriever = pgvector if dense_backend == DenseBackend.pgvector else qdrant
-    return HybridRetriever(lexical, dense, fusion_method.value)
+    hybrid = HybridRetriever(lexical, dense, fusion_method.value)
+    return AdaptiveRouterRetriever(lexical, dense, hybrid)

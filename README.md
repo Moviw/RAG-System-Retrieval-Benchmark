@@ -56,3 +56,7 @@ If Docker daemon access fails, fix local Docker socket permissions or run from a
 - Phase 6: Prometheus and Grafana dashboards.
 - Phase 7: adaptive retrieval routing.
 - Phase 8: complete methodology, trade-off analysis, and reproducibility docs.
+
+## Adaptive Query Router
+
+The optional adaptive router is rule based in v1 and intentionally isolated from retriever implementations. It sends identifier-heavy queries such as error codes, versions, function names, paths, and UUIDs toward lexical retrieval; semantic natural-language questions toward dense retrieval; and mixed identifier plus intent queries toward hybrid retrieval. This keeps the baseline replaceable by a learned classifier later.
