@@ -2,6 +2,7 @@ import asyncio
 import hashlib
 import math
 from collections.abc import Sequence
+from typing import cast
 
 import httpx
 
@@ -50,7 +51,7 @@ class LocalSentenceTransformerProvider:
             normalize_embeddings=True,
             show_progress_bar=False,
         )
-        return embeddings.tolist()
+        return cast(list[list[float]], embeddings.tolist())
 
 
 class ExternalEmbeddingProvider:

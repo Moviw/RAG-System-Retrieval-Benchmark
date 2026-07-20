@@ -1,6 +1,7 @@
 import asyncio
 import json
 from pathlib import Path
+from typing import Any, cast
 
 from fastapi import APIRouter, Depends, HTTPException, Request
 from qdrant_client import AsyncQdrantClient
@@ -125,7 +126,7 @@ async def benchmark_run_detail(run_id: str) -> dict[str, object]:
     if not result_exists:
         raise HTTPException(status_code=404, detail="Benchmark run not found")
     content = await asyncio.to_thread(result_file.read_text, encoding="utf-8")
-    return json.loads(content)
+    return cast(dict[str, Any], json.loads(content))
 
 
 @router.post("/documents", response_model=DocumentWriteResponse)
