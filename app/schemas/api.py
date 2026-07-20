@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class HealthResponse(BaseModel):
@@ -23,3 +23,21 @@ class BenchmarkRunResponse(BaseModel):
 
 class BenchmarkRunListResponse(BaseModel):
     runs: list[str]
+
+
+class DocumentWriteRequest(BaseModel):
+    document_id: str | None = None
+    title: str
+    content: str
+    source: str = "online-api"
+    version: str = "1.0"
+    language: str = "en"
+    tenant_id: str = "tenant-A"
+    department: str = "engineering"
+    access_level: str = "internal"
+    metadata: dict[str, object] = Field(default_factory=dict)
+
+
+class DocumentWriteResponse(BaseModel):
+    document_id: str
+    chunks_indexed: int

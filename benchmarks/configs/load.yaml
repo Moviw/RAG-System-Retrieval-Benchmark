@@ -1,0 +1,24 @@
+seed: 42
+host: http://localhost:8000
+warmup_seconds: 60
+measurement_seconds: 300
+concurrency: [1, 5, 10, 25, 50, 100]
+workloads:
+  read-only:
+    search: 100
+    insert: 0
+    update: 0
+    delete: 0
+  mostly-read:
+    search: 95
+    insert: 3
+    update: 2
+    delete: 0
+  mixed:
+    search: 80
+    insert: 10
+    update: 5
+    delete: 5
+cache_modes:
+  - cold
+  - warm

@@ -36,7 +36,7 @@ benchmark-small:
 	UV_CACHE_DIR=$(UV_CACHE_DIR) uv run python -m scripts.benchmark --config benchmarks/configs/small.yaml
 
 load-test:
-	UV_CACHE_DIR=$(UV_CACHE_DIR) uv run locust -f tests/performance/locustfile.py
+	UV_CACHE_DIR=$(UV_CACHE_DIR) uv run locust -f tests/performance/locustfile.py --host=http://localhost:8000
 
 compose-config:
 	docker compose config

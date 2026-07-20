@@ -13,6 +13,8 @@ from app.schemas.api import (
     BenchmarkRunListResponse,
     BenchmarkRunRequest,
     BenchmarkRunResponse,
+    DocumentWriteRequest,
+    DocumentWriteResponse,
     HealthResponse,
     ReadyResponse,
 )
@@ -116,3 +118,85 @@ async def benchmark_run_detail(run_id: str) -> dict[str, object]:
         raise HTTPException(status_code=404, detail="Benchmark run not found")
     content = await asyncio.to_thread(result_file.read_text, encoding="utf-8")
     return json.loads(content)
+
+
+@router.post("/documents", response_model=DocumentWriteResponse)
+async def upsert_document(
+    request_body: DocumentWriteRequest,
+    request: Request,
+    session: AsyncSession = Depends(get_session),
+) -> DocumentWriteResponse:
+    import hashlib
+    import uuid
+
+    from app.ingestion.pipeline import ingest_documents_postgres, ingest_documents_qdrant
+    from app.ingestion.synthetic import SyntheticDocument
+
+    settings = get_settings()
+    checksum = hashlib.sha256(request_body.content.encode("utf-8")).hexdigest()
+    document_id = (
+        uuid.UUID(request_body.document_id)
+        if request_body.document_id
+        else uuid.uuid5(uuid.NAMESPACE_URL, f"{request_body.source}:{checksum}")
+    )
+    document = SyntheticDocument(
+        id=document_id,
+        title=request_body.title,
+        source=request_body.source,
+        version=request_body.version,
+        language=request_body.language,
+        tenant_id=request_body.tenant_id,
+        department=request_body.department,
+        access_level=request_body.access_level,
+        checksum=checksum,
+        metadata={**request_body.metadata, "online_write": True},
+        content=request_body.content,
+    )
+    provider = request.app.state.embedding_provider
+    chunks = await ingest_documents_postgres(session, [document], provider, 220, 40)
+    qdrant_client = AsyncQdrantClient(url=settings.qdrant_url)
+    try:
+        await ingest_documents_qdrant(qdrant_client, settings, [document], provider, 220, 40)
+    finally:
+        await qdrant_client.close()
+    return DocumentWriteResponse(document_id=str(document_id), chunks_indexed=chunks)
+
+
+@router.patch("/documents/{document_id}", response_model=DocumentWriteResponse)
+async def update_document(
+    document_id: str,
+    request_body: DocumentWriteRequest,
+    request: Request,
+    session: AsyncSession = Depends(get_session),
+) -> DocumentWriteResponse:
+    patched_body = request_body.model_copy(update={"document_id": document_id})
+    return await upsert_document(patched_body, request, session)
+
+
+@router.delete("/documents/{document_id}")
+async def delete_document(
+    document_id: str,
+    session: AsyncSession = Depends(get_session),
+) -> dict[str, str]:
+    import uuid
+
+    from qdrant_client import AsyncQdrantClient
+    from qdrant_client.models import FieldCondition, Filter, MatchValue
+    from sqlalchemy import delete
+
+    from app.db.models import Document
+
+    settings = get_settings()
+    await session.execute(delete(Document).where(Document.id == uuid.UUID(document_id)))
+    await session.commit()
+    client = AsyncQdrantClient(url=settings.qdrant_url)
+    try:
+        await client.delete(
+            collection_name=settings.qdrant_collection,
+            points_selector=Filter(
+                must=[FieldCondition(key="document_id", match=MatchValue(value=document_id))]
+            ),
+        )
+    finally:
+        await client.close()
+    return {"status": "deleted"}
