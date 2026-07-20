@@ -1,8 +1,8 @@
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
-from prometheus_client import make_asgi_app
+from fastapi import FastAPI, Response
+from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
 
 from app.api.routes import router
 from app.core.config import get_settings
@@ -29,7 +29,11 @@ def create_app() -> FastAPI:
     )
     app.middleware("http")(prometheus_http_middleware)
     app.include_router(router)
-    app.mount("/metrics", make_asgi_app())
+
+    @app.get("/metrics", include_in_schema=False)
+    async def metrics() -> Response:
+        return Response(content=generate_latest(), media_type=CONTENT_TYPE_LATEST)
+
     return app
 
 

@@ -1,4 +1,5 @@
 import hashlib
+import math
 import random
 import uuid
 from dataclasses import dataclass
@@ -64,6 +65,7 @@ def generate_documents(
     rng = random.Random(seed)
     document_count = max(1, target_chunks // chunks_per_document)
     documents: list[SyntheticDocument] = []
+    repeat_factor = max(1, math.ceil((220 + 180 * (chunks_per_document - 1)) / 50))
     for index in range(document_count):
         topic, description = TOPICS[index % len(TOPICS)]
         tenant = f"tenant-{chr(ord('A') + index % 5)}"
@@ -82,7 +84,7 @@ def generate_documents(
             "Use deterministic retries, structured logs, and metadata filters "
             "for reproducible tests.",
         ]
-        repeated = " ".join(paragraphs * chunks_per_document)
+        repeated = " ".join(paragraphs * repeat_factor)
         checksum = hashlib.sha256(repeated.encode("utf-8")).hexdigest()
         documents.append(
             SyntheticDocument(

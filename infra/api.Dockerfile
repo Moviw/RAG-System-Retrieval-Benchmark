@@ -14,6 +14,7 @@ RUN uv pip install --system .
 COPY app ./app
 COPY alembic.ini ./alembic.ini
 COPY alembic ./alembic
+COPY benchmarks ./benchmarks
 COPY scripts ./scripts
 
 USER appuser

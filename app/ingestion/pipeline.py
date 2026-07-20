@@ -49,7 +49,7 @@ async def ingest_documents_postgres(
                 metadata_=document.metadata,
             )
             .on_conflict_do_update(
-                index_elements=[Document.checksum],
+                index_elements=[Document.id],
                 set_={
                     "title": document.title,
                     "source": document.source,
@@ -58,6 +58,7 @@ async def ingest_documents_postgres(
                     "tenant_id": document.tenant_id,
                     "department": document.department,
                     "access_level": document.access_level,
+                    "checksum": document.checksum,
                     "metadata": document.metadata,
                 },
             )
@@ -153,15 +154,17 @@ async def ingest_documents_qdrant(
     embedding_provider: EmbeddingProvider,
     chunk_size_tokens: int,
     overlap_tokens: int,
+    batch_size: int = 256,
 ) -> int:
     await ensure_qdrant_collection(client, settings)
-    points: list[PointStruct] = []
+    total = 0
+    batch: list[PointStruct] = []
     for document in documents:
         text_chunks = chunk_text(document.content, chunk_size_tokens, overlap_tokens)
         embeddings = await embedding_provider.embed_texts([chunk.content for chunk in text_chunks])
         for text_chunk, embedding in zip(text_chunks, embeddings, strict=True):
             chunk_id = deterministic_chunk_id(document.id, text_chunk.chunk_index)
-            points.append(
+            batch.append(
                 PointStruct(
                     id=str(chunk_id),
                     vector=embedding,
@@ -177,6 +180,11 @@ async def ingest_documents_qdrant(
                     },
                 )
             )
-    if points:
-        await client.upsert(collection_name=settings.qdrant_collection, points=points)
-    return len(points)
+            if len(batch) >= batch_size:
+                await client.upsert(collection_name=settings.qdrant_collection, points=batch)
+                total += len(batch)
+                batch = []
+    if batch:
+        await client.upsert(collection_name=settings.qdrant_collection, points=batch)
+        total += len(batch)
+    return total

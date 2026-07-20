@@ -4,6 +4,12 @@ services:
       context: .
       dockerfile: infra/api.Dockerfile
     env_file: .env.example
+    environment:
+      EMBEDDING_PROVIDER: ${EMBEDDING_PROVIDER:-local}
+      EMBEDDING_MODEL: ${EMBEDDING_MODEL:-sentence-transformers/all-MiniLM-L6-v2}
+      EMBEDDING_DIMENSION: ${EMBEDDING_DIMENSION:-384}
+      EMBEDDING_BATCH_SIZE: ${EMBEDDING_BATCH_SIZE:-32}
+      EMBEDDING_DEVICE: ${EMBEDDING_DEVICE:-cpu}
     ports:
       - "8000:8000"
     depends_on:
