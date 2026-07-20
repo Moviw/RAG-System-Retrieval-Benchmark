@@ -1,0 +1,70 @@
+[project]
+name = "rag-retrieval-benchmark"
+version = "0.1.0"
+description = "Reproducible benchmark for RAG retrieval quality, latency, filtering, and storage trade-offs."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = { text = "MIT" }
+authors = [{ name = "rag-retrieval-benchmark contributors" }]
+dependencies = [
+  "aiosqlite==0.20.0",
+  "alembic==1.14.0",
+  "asyncpg==0.30.0",
+  "fastapi==0.115.6",
+  "greenlet==3.1.1",
+  "httpx==0.28.1",
+  "numpy==2.2.1",
+  "pandas==2.2.3",
+  "pgvector==0.3.6",
+  "prometheus-client==0.21.1",
+  "pydantic==2.10.4",
+  "pydantic-settings==2.7.1",
+  "python-json-logger==3.2.1",
+  "PyYAML==6.0.2",
+  "qdrant-client==1.12.1",
+  "sentence-transformers==3.3.1",
+  "SQLAlchemy==2.0.36",
+  "tenacity==9.0.0",
+  "typer==0.15.1",
+  "uvicorn[standard]==0.34.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "mypy==1.14.1",
+  "pre-commit==4.0.1",
+  "pytest==8.3.4",
+  "pytest-asyncio==0.25.0",
+  "ruff==0.8.6",
+]
+load = [
+  "locust==2.32.5",
+]
+viz = [
+  "matplotlib==3.10.0",
+]
+
+[project.scripts]
+rag-benchmark = "scripts.benchmark:app"
+rag-seed = "scripts.seed:app"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "ASYNC", "SIM", "RUF"]
+ignore = ["B008"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+plugins = ["pydantic.mypy"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = ["error"]

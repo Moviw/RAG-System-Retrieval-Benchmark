@@ -1,0 +1,11 @@
+apiVersion: 1
+
+providers:
+  - name: rag-retrieval-benchmark
+    orgId: 1
+    folder: RAG Retrieval Benchmark
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 30
+    options:
+      path: /var/lib/grafana/dashboards

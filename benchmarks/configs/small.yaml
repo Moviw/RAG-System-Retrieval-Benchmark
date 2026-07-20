@@ -1,0 +1,24 @@
+name: small
+dataset:
+  target_chunks: 10000
+  chunk_size_tokens: 220
+  chunk_overlap_tokens: 40
+  seed: 42
+retrieval:
+  top_k: 10
+  strategies:
+    - lexical
+    - dense_pgvector
+    - dense_qdrant
+    - hybrid_pgvector_rrf
+    - hybrid_qdrant_rrf
+embedding:
+  provider: local
+  model: sentence-transformers/all-MiniLM-L6-v2
+  dimension: 384
+  batch_size: 32
+  device: cpu
+load:
+  concurrency: [1, 5, 10]
+  warmup_seconds: 10
+  measurement_seconds: 30
