@@ -12,6 +12,8 @@ retrieval:
     - dense_qdrant
     - hybrid_pgvector_rrf
     - hybrid_qdrant_rrf
+    - hybrid_pgvector_weighted
+    - hybrid_qdrant_weighted
 embedding:
   provider: local
   model: sentence-transformers/all-MiniLM-L6-v2
