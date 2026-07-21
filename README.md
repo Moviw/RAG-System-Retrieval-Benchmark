@@ -162,18 +162,33 @@ Dashboard JSON files live under `infra/grafana/dashboards/`. Screenshots from lo
 
 ## Initial Results
 
-A small local smoke benchmark is committed under `benchmarks/results/0aa30fb2-970b-40d7-9a3c-41d3681ff6cc/`.
+The formal local baseline is committed under `benchmarks/results/5bc732d0-f8fa-47a0-acc8-e634d804838b/`.
 
 - Config: `benchmarks/configs/small.yaml`
-- Git commit recorded by the run: `d356c7b832bd68db0fc2d62c1ca0a7a758ba77b3`
-- Strategy: `hybrid_qdrant`
+- Git commit recorded by the run: `ce80051488d672bf2c837de6633c2557de95e21e`
+- Embedding provider: local Sentence Transformers
+- Embedding model: `sentence-transformers/all-MiniLM-L6-v2`
+- Strategies: `lexical`, `dense_pgvector`, `dense_qdrant`, `hybrid_pgvector_rrf`, `hybrid_qdrant_rrf`, `hybrid_pgvector_weighted`, `hybrid_qdrant_weighted`
 - Dataset target: `10000` chunks
+- Actual indexed chunks in the local run: `12500`
 - Top K: `10`
 - Warm cache: `true`
-- Mean latency: `10.11 ms`
-- Mean Recall@10: `0.300`
+- Overall mean latency: `12.60 ms`
+- Overall mean Recall@10: `0.286`
 
-This sample uses deterministic synthetic data and the hash embedding provider for fast local validation. It proves the pipeline, artifact generation, and observability path are wired correctly; it should not be interpreted as a model-quality claim.
+Strategy-level summary:
+
+| Strategy | Recall@10 | Mean ms | P95 ms | Notes |
+|---|---:|---:|---:|---|
+| lexical | 0.200 | 1.52 | 6.26 | Fastest, strongest when exact tokens match. |
+| dense_pgvector | 0.300 | 9.23 | 17.23 | Same embeddings inside PostgreSQL. |
+| dense_qdrant | 0.300 | 12.63 | 29.79 | Dedicated vector backend, same embeddings and metadata. |
+| hybrid_pgvector_rrf | 0.300 | 9.91 | 16.33 | RRF over FTS + pgvector. |
+| hybrid_qdrant_rrf | 0.300 | 14.52 | 31.23 | RRF over FTS + Qdrant. |
+| hybrid_pgvector_weighted | 0.300 | 10.44 | 16.65 | Min-max normalized weighted fusion. |
+| hybrid_qdrant_weighted | 0.300 | 29.99 | 111.11 | Higher tail latency in this small local run. |
+
+The earlier hash-embedding smoke result remains under `benchmarks/results/0aa30fb2-970b-40d7-9a3c-41d3681ff6cc/` to show fast pipeline validation. The formal baseline above uses the default open-source embedding model. These numbers are still a local synthetic-data baseline, not a production-scale or model-quality claim.
 
 ## Failure Cases To Inspect
 
@@ -224,7 +239,7 @@ docker compose config
 - Synthetic data differs from production traffic and should be replaced or supplemented with real domain corpora before making product decisions.
 - Embedding model choice can dominate multilingual and semantic-query results.
 - Latency, quality, storage, update behavior, and infrastructure complexity must be compared together.
-- The committed smoke result uses hash embeddings for speed; run the default Sentence Transformers configuration before drawing semantic-retrieval conclusions.
+- The committed formal result uses Sentence Transformers, but the corpus and labels are still synthetic and small.
 
 ## Roadmap
 

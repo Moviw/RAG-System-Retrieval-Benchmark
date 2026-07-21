@@ -6,6 +6,7 @@ Each benchmark run writes:
 - `results.csv`
 - `summary.md`
 - `latency_by_query_type.png` when matplotlib is installed
+- `strategy_comparison.png` when matplotlib is installed
 
 Planned comparison charts:
 
